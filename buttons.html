@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All the Fishes</title>
+    <script src="https://pixijs.download/release/pixi.js"></script>
+</head>
+<body>
+
+<script type="module">
+
+    //The App
+    const app = new PIXI.Application();
+    await app.init({
+        width:640,
+        height:480,
+        backgroundColor: 0x000000
+    });
+
+    //Add view to the body
+    document.body.appendChild(app.canvas);
+
+    //Expose the app to the document
+    window.app = app; 
+
+
+    // Our Very First Button
+    //let button = new PIXI.Graphics();
+        //button.beginFill(0xFFFFFF);
+       // button.drawRect(200,200,100,50);
+       // button.endFill();
+
+       // button.interactive = true;
+
+       // button.on("pointermove", (event) => {
+          //  console.log("Pointer", event.client.x, event.client.y);
+
+       // }); 
+
+    class Button extends PIXI.Container {
+
+
+
+
+
+
+        // Constructor
+        constructor(text,w,h) {
+            super();
+
+        // Set Defaults
+        if (text == undefined) text = "Button";
+        if (w == undefined) w = 100;
+        if (h == undefined) h = 50;
+
+
+        // Button Body
+            let body = new PIXI.Graphics();
+            body.beginFill(0xFFFFFF);
+            body.drawRect(0,0,
+            
+            w,h);
+            body.endFill();
+
+            this.addChild(body);
+            this.body = body;
+
+
+        // Button Label
+            let label = new PIXI.Text(text);
+            label.anchor.set(.5);
+            label.x = body.width/2;
+            label.y = body.height/2;
+            this.addChild(label);
+
+            this.interactive = true;
+        }
+
+
+
+
+    } // END BUTTON
+
+    let ourButton = new Button("Label",100,50);
+        ourButton.x = 100;
+        ourButton.y = 50;
+        ourButton.on('pointerover', () => {
+            ourButton.alpha = .5;
+        });
+        ourButton.on('pointerout', () => {
+            ourButton.alpha =  1;
+        });
+        ourButton.on('pointerdown', () => {
+            ourButton.body.tint = 0xDD4545;
+        }); 
+        ourButton.on('pointerup', () => {
+            ourButton.body.tint = 0xFFFFFF;
+        });
+        ourButton.on('pointerupoutside', () => {
+            ourButton.body.tint = 0xFF0000;
+        });
+    app.stage.addChild(ourButton);
+
+
+    // Make this button draggable
+    let ourButton2 = new Button("Other Button",200);
+        ourButton2.x = 300;
+        ourButton2.y = 50;
+    app.stage.addChild(ourButton2);
+    
+    let buttonDragged = false;
+        ourButton2.on('pointerdown', () => { buttonDragged = true; });
+        ourButton2.on('pointerup', () => { buttonDragged = false; });
+        ourButton2.on('pointermove', (event) => {
+            if (buttonDragged == false) return;
+            ourButton2.x = event.global.x - ourButton.width/2;
+            ourButton2.y = event.global.y - ourButton.height/2;
+            console.log(event);
+         });
+
+
+
+</script>
+    
+</body>
+</html>
